@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Home = () => (
-	<div>
-    Home Component
-  </div>
-);
+class Home extends Component {
+
+	componentDidMount() {
+		$(".button-collapse").sideNav();
+	}
+
+	render() {
+		return(
+			<div>
+				
+		  </div>
+		);
+	}
+}
 
 export default Home;
