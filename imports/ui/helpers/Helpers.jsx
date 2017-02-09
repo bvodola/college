@@ -16,11 +16,13 @@ class Repeatable extends Component {
 		};
 	}
 
-	addChild() {
+	addChild(event) {
+		event.preventDefault();
 		this.setState({count: this.state.count+1});
 	}
 
-	removeChild() {
+	removeChild(event) {
+		event.preventDefault();
 		if(this.state.count > 1) {
 			this.setState({count: this.state.count-1});
 		}
@@ -28,49 +30,72 @@ class Repeatable extends Component {
 
 	// This function is responsible for rendering each loop of the
 	// <Repeatable /> component.
-	renderChildren(children, refName) {
+	renderChildren(children, key) {
 
-		// First we make sure that the refName parameter passed is a String
-		refName = String(refName);
+		// First we make sure that the key parameter passed is a String
+		key = String(key);
 
+		// let checkChildren = function(children, key) {
+		// 	if(typeof children !== 'undefined') {
+		// 		return React.Children.map(children, (child, j) => {
+		// 			if(typeof child.ref !== 'undefined' || child.ref !== null) {
+		// 				child = React.cloneElement(child, { ref: child.ref+key });
+		// 				console.log('child',child);
+		//
+		// 				if(typeof child.props.children !== 'undefined') {
+		// 					child.props.children = checkChildren(child.props.children, key);
+		// 				}
+		//
+		// 				return child;
+		// 			}
+		// 		});
+		// 	}
+		// };
+		//
+		// children = checkChildren(children, key);
+
+		console.log('children', children);
 		// Iterating through the children of the repeatable component
 		return React.Children.map(children, (child, j) => {
-
-			// First, we check if this child is NOT the defaultRef child
-			if(typeof child.props.defaultRef === 'undefined') {
-
-				// Now we check if the refName prop for this child is defined
-				if(typeof child.props.refName !== 'undefined') {
-					refName = child.props.refName+refName;
-				}
-
-				// Then, if the refName is not defined, we must check if
-				// this is the only child element inside the Repeatable component
-				else {
-
-					// If this is not the only child, we must set its ref to null
-					// in order to avoid ref names conflict.
-					if(children instanceof Array) {
-						refName = null;
-					}
-				}
-			}
-			return React.cloneElement(child, { ref: refName });
+			return React.cloneElement(child, {ref: j});
 		});
+
 	}
 
 	render() {
-		return(
-			<div className='repeatable'>
-				{[...Array(this.state.count)].map((x,i) => (
-					<div key={i}>
-						{this.renderChildren(this.props.children, i)}
-						<button onClick={this.removeChild.bind(this)}>X</button>
-					</div>
-				))}
-				<button onClick={this.addChild.bind(this)}>+</button>
-			</div>
-		);
+
+		if(this.props.type == 'text') {
+			return(
+				<div className='repeatable'>
+					{[...Array(this.state.count)].map((x,i) => {
+						let id = Math.random().toString(36).substring(2,12);
+						return (
+							<div key={i} className={this.props.divClass}>
+								<input className={this.props.inputClass} type="text" ref={String(i)} id={id} />
+								<label htmlFor={id} className={this.props.labelClass}>Código da Turma</label>
+								{this.state.count>1?<button className={this.props.removeButtonClass} onClick={this.removeChild.bind(this)}>X</button>:''}
+							</div>
+						);
+					})}
+					<button className={this.props.addButtonClass} onClick={this.addChild.bind(this)}>+</button>
+				</div>
+			);
+		}
+
+		else {
+			return(
+				<div className='repeatable'>
+					{[...Array(this.state.count)].map((x,i) => (
+						<div key={i}>
+							{this.renderChildren(this.props.children, i)}
+							<button onClick={this.removeChild.bind(this)}>X</button>
+						</div>
+					))}
+					<button onClick={this.addChild.bind(this)}>+</button>
+				</div>
+			);
+		}
+
 	}
 }
 

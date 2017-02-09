@@ -16,7 +16,7 @@ class SaveCourse extends Component {
   }
 
   refer() {
-    console.log(this.refs);
+    console.log('refers',this.refs);
   }
 
   render() {
@@ -39,12 +39,14 @@ class SaveCourse extends Component {
         </div>
 
         <h2>Turmas</h2>
-        <Repeatable refName="test" defaultRef>
-          <div className="input-field col m4 s12" >
-            <input id="class" type="text" />
-            <label htmlFor="class">Código da Turma</label>
-          </div>
-        </Repeatable>
+        <Repeatable
+          ref="turma"
+          type="text"
+          divClass="input-field col m4 s12"
+          removeButtonClass="btn-floating waves-effect waves-light red"
+          addButtonClass="btn-floating btn-small waves-effect waves-light green"
+        />
+
 
         <div className="col s12 m12 l12">
           <button onClick={this.refer.bind(this)} className="waves-effect waves-light btn">Refs</button>
