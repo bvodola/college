@@ -28,49 +28,57 @@ class Repeatable extends Component {
 
 	// This function is responsible for rendering each loop of the
 	// <Repeatable /> component.
-	renderChildren(children, refName) {
+	renderChildren(children) {
 
-		// First we make sure that the refName parameter passed is a String
-		refName = String(refName);
+		let changeChildrenRefNames = function(children) {
+
+			return React.Children.map(children, (child, i) => {
+				console.log(i,child.type,child);
+				if(typeof child.props != 'undefined' && typeof child.props.children != undefined) {
+					child.props.children = changeChildrenRefNames(child.props.children);
+				}
+				return React.cloneElement(child, { ref: child.ref+String(i) });
+
+			});
+		}
 
 		// Iterating through the children of the repeatable component
-		return React.Children.map(children, (child, j) => {
-
-			// First, we check if this child is NOT the defaultRef child
-			if(typeof child.props.defaultRef === 'undefined') {
-
-				// Now we check if the refName prop for this child is defined
-				if(typeof child.props.refName !== 'undefined') {
-					refName = child.props.refName+refName;
-				}
-
-				// Then, if the refName is not defined, we must check if
-				// this is the only child element inside the Repeatable component
-				else {
-
-					// If this is not the only child, we must set its ref to null
-					// in order to avoid ref names conflict.
-					if(children instanceof Array) {
-						refName = null;
-					}
-				}
-			}
-			return React.cloneElement(child, { ref: refName });
-		});
+		return changeChildrenRefNames(children);
 	}
 
 	render() {
-		return(
-			<div className='repeatable'>
-				{[...Array(this.state.count)].map((x,i) => (
-					<div key={i}>
-						{this.renderChildren(this.props.children, i)}
-						<button onClick={this.removeChild.bind(this)}>X</button>
+		console.log('this.refs', this.refs);
+		if(typeof this.props.type != 'undefined') {
+			if(this.props.type == 'text') {
+				return(
+					<div className="repeatable">
+						{[...Array(this.state.count)].map((x,i) => (
+							<div className="input-field" key={i}>
+								<input type="text" ref={this.props.refName+i} id={this.props.refName+i}/>
+								<label htmlFor={this.props.refName+i}>{this.props.placeholder||''}</label>
+								<button onClick={this.removeChild.bind(this)}>X</button>
+							</div>
+						))}
+						<button onClick={this.addChild.bind(this)}>+</button>
 					</div>
-				))}
-				<button onClick={this.addChild.bind(this)}>+</button>
-			</div>
-		);
+				);
+			}
+		}
+
+		else {
+
+			return(
+				<div className='repeatable'>
+					{[...Array(this.state.count)].map((x,i) => (
+						<div key={i}>
+							{this.renderChildren(this.props.children)}
+							<button onClick={this.removeChild.bind(this)}>X</button>
+						</div>
+					))}
+					<button onClick={this.addChild.bind(this)}>+</button>
+				</div>
+			);
+		}
 	}
 }
 
@@ -157,7 +165,6 @@ class CheckboxList extends Component {
 	handleChange(event) {
 
 		stateValue = this.state.value;
-		console.log(event);
 
 		this.setState({ value: event.target.value }, function() {
 			if(typeof this.props.onChange === 'function') {

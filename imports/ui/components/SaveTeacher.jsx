@@ -24,7 +24,7 @@ class SaveTeacher extends Component {
           <label htmlFor="name">Nome do Professor</label>
         </div>
         <div className="col s6">
-          <button type="submit" className="waves-effect waves-light btn">Cadastrar</button>
+          <button type="submit" className="waves-effect waves-light btn">Cadastrar Professor</button>
         </div>
       </form>
     );
