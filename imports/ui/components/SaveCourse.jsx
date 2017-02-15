@@ -20,7 +20,7 @@ class SaveCourse extends Component {
   }
 
   refer() {
-    console.log(this.refs);
+    console.log('refers',this.refs);
   }
 
   render() {

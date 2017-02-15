@@ -16,11 +16,13 @@ class Repeatable extends Component {
 		};
 	}
 
-	addChild() {
+	addChild(event) {
+		event.preventDefault();
 		this.setState({count: this.state.count+1});
 	}
 
-	removeChild() {
+	removeChild(event) {
+		event.preventDefault();
 		if(this.state.count > 1) {
 			this.setState({count: this.state.count-1});
 		}
@@ -79,6 +81,7 @@ class Repeatable extends Component {
 				</div>
 			);
 		}
+
 	}
 }
 
