@@ -10,7 +10,7 @@ class Repeatable extends Component {
 		super(props);
 
 		// Sets the initial state
-		// count: Number of initial statements
+		// count: Number of initial components
 		this.state = {
 			count: 1
 		};
@@ -31,21 +31,9 @@ class Repeatable extends Component {
 	// This function is responsible for rendering each loop of the
 	// <Repeatable /> component.
 	renderChildren(children) {
-
-		let changeChildrenRefNames = function(children) {
-
-			return React.Children.map(children, (child, i) => {
-				console.log(i,child.type,child);
-				if(typeof child.props != 'undefined' && typeof child.props.children != undefined) {
-					child.props.children = changeChildrenRefNames(child.props.children);
-				}
-				return React.cloneElement(child, { ref: child.ref+String(i) });
-
-			});
-		}
-
-		// Iterating through the children of the repeatable component
-		return changeChildrenRefNames(children);
+		return React.Children.map(children, (child) => {
+			return React.cloneElement(child);
+		});
 	}
 
 	render() {
@@ -67,8 +55,8 @@ class Repeatable extends Component {
 			}
 		}
 
-		else {
 
+		else {
 			return(
 				<div className='repeatable'>
 					{[...Array(this.state.count)].map((x,i) => (
@@ -237,6 +225,29 @@ class Helpers {
 			}
 		}
 		return refValues;
+	}
+
+	static getDataValues(data) {
+		console.log(data);
+		let dataValues = new Object();
+
+		for (var key in data) {
+			if (data.hasOwnProperty(key)) {
+				if(typeof data[key].nodeName !== 'undefined' && (data[key].nodeName == 'INPUT' || data[key].nodeName == 'SELECT' || data[key].nodeName == 'TEXTAREA')) {
+					dataValues[key] = data[key].value;
+				} else if(typeof data[key].props !== 'undefined' && typeof data[key].props.stateValue !== 'undefined') {
+					if(data[key].props.stateValue === true)
+						dataValues[key] = data[key].state['value'];
+					else
+						dataValues[key] = data[key].state[data[key].props.stateValue];
+				} else if(Array.isArray(data[key])) {
+					dataValues[key] = data[key].map((v,i,a) => {
+						// Do Mapping
+					});
+				}
+			}
+		}
+		return dataValues;
 	}
 
 	// Merges the obj2 properties into ojb1. Overwrites any property
