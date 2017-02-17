@@ -198,6 +198,80 @@ class CheckboxList extends Component {
 
 }
 
+
+// ========
+// DataList
+// ========
+class DataList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: []
+    }
+    this.data = {};
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleKeyUp(event) {
+  	isReturnKey = event.keyCode == 13 ? true : false;
+    event.preventDefault();
+
+    if(isReturnKey) {
+	    this.setState((prevState) => ({
+	      value: prevState.value.concat(this.data.input.value)
+	    }), function() {
+	      console.log(this.state.value);
+	      this.data.input.value = '';
+	    });
+    }
+    
+  }
+
+  handleDelete(index) {
+    console.log('index', index); 
+    this.setState((prevState) => {
+      prevState.value.splice(index,1);
+      return { value: prevState.value }
+    }, function() {
+      console.log(this.state.value);
+    })
+
+  }
+
+  render() {
+
+    let input_random_id = Math.random().toString(36).substr(2, 5);
+
+    return(
+      <div>
+      	{this.state.value.length > 0 ? this.renderList():'Nenhum(a) '+this.props.placeholder+' cadastrado(a)'}
+		<div className="input-field">
+            <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.data.input = el;}} />
+			<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
+		</div>
+       	
+      </div>
+    )
+  }
+
+  renderList() {
+  	return(
+  		<ul className="collection">
+        {this.state.value.map((v,i,a) => (
+          <li className="collection-item" key={i}>
+            <div>
+              {v}
+              <span onClick={() => this.handleDelete(i)} href="#" className="secondary-content"><i className="fa fa-trash"></i></span>
+            </div>
+          </li>
+        ))}
+        </ul>
+	)
+  }
+}
+
 // =======
 // Helpers
 // =======
@@ -262,4 +336,4 @@ class Helpers {
 
 }
 
-export { Repeatable, DataSelect, Helpers, CheckboxList };
+export { Repeatable, DataSelect, DataList, Helpers, CheckboxList };
