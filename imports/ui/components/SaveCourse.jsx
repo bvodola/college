@@ -8,16 +8,46 @@ class SaveCourseClasses extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: []
+      current_class: {
+        rooms: [],
+        teachers: []
+      },
+
+      form_data: []
     }
   }
 
+  handleRoomState(method, data, callback) {
+    if(method == 'add') {
+      let rooms = this.state.current_class.rooms;
+      this.setState(
+        (prevState) => {
+          prevState.current_class.rooms.push(data);
+          return prevState;
+        }, function() {
+          console.log('SaveCourse.jsx', this.state.current_class.rooms);
+          if(typeof cb === 'function') {
+            callback();
+          }
+        }
+      );
+      
+    }
+  }
+
+
   handleClick() {
-    form_data = Helpers.getRefValues(this.refs);
-    this.setState((prevState) => ({
-      value: prevState.value.concat(form_data)
-    }), function() {
-      console.log(this.state.value);
+    let refValues = Helpers.getRefValues(this.refs);
+    console.log('refValues',refValues);
+    
+    let form_data = this.state.current_class;
+    console.log('form_data',form_data);
+
+    form_data = Helpers.merge(refValues,this.state.current_class);
+    console.log('form_data MERGED',form_data);
+
+    this.setState((prevState) => ({form_data: prevState.form_data.concat(form_data)}), function() {
+      console.log('state.form_data',this.state.form_data);
     });
   }
 
@@ -36,7 +66,7 @@ class SaveCourseClasses extends Component {
   renderClassesList() {
     return(
       <div className="course-classes-list">
-        {this.state.value.map((v,i,a) => (
+        {this.state.form_data.map((v,i,a) => (
           <div key={i}>
             <p>{v.code}</p>
             <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span> 
@@ -50,7 +80,7 @@ class SaveCourseClasses extends Component {
     return(
         <div>
           
-          {this.state.value.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
+          {this.state.form_data.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
 
           <div className="save-course-classes">
             <div className="input-field">
@@ -58,8 +88,8 @@ class SaveCourseClasses extends Component {
               <label htmlFor="code">Número da Turma</label>
             </div>
 
-            <DataList ref="rooms" placeholder="Sala" stateValue />
-            <DataList ref="teachers" placeholder="Professor" stateValue />
+            <DataList ref="rooms" placeholder="Sala" data={this.state.current_class.rooms} handleState={this.handleRoomState.bind(this)} />
+            
 
             <button onClick={() => this.handleClick()} className="btn-floating btn-large waves-effect waves-light green"><i className="fa fa-plus"></i></button>
           </div>
@@ -84,7 +114,7 @@ class SaveCourse extends Component {
 
   render() {
     return(
-      <div>
+      <div className="page">
 
         <h2>Nova Disciplina</h2>
         <div className="input-field">

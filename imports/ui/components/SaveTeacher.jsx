@@ -18,15 +18,18 @@ class SaveTeacher extends Component {
   render() {
     
     return(
-      <form className="row" onSubmit={this.handleSubmit.bind(this)}>
-        <div className="input-field col s6">
-          <input id="name" type="text" ref="name" />
-          <label htmlFor="name">Nome do Professor</label>
-        </div>
-        <div className="col s6">
-          <button type="submit" className="waves-effect waves-light btn">Cadastrar Professor</button>
-        </div>
-      </form>
+      <div className="page">
+        <form className="row" onSubmit={this.handleSubmit.bind(this)}>
+          <h1>Cadastrar Professor</h1>
+          <div className="input-field col s12 m6">
+            <input id="name" type="text" ref="name" />
+            <label htmlFor="name">Nome do Professor</label>
+          </div>
+          <div className="col s12 m6">
+            <button type="submit" className="waves-effect waves-light btn">Cadastrar Professor</button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

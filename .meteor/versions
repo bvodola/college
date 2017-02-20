@@ -47,7 +47,7 @@ launch-screen@1.0.12
 livedata@1.0.18
 localstorage@1.0.11
 logging@1.0.14
-materialize:materialize@0.97.0
+materialize:materialize@0.97.5
 meteor@1.1.16
 meteor-base@1.0.4
 meteorhacks:inject-initial@1.0.4
@@ -65,6 +65,8 @@ npm-mongo@1.4.45
 observe-sequence@1.0.12
 ordered-dict@1.0.8
 package-version-parser@3.0.9
+planettraining:material-design-icons@2.2.3
+polyroid:font-roboto@1.0.1
 promise@0.7.3
 random@1.0.10
 rate-limit@1.0.5

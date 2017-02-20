@@ -217,13 +217,12 @@ class DataList extends Component {
   handleKeyUp(event) {
   	isReturnKey = event.keyCode == 13 ? true : false;
     event.preventDefault();
+    let self = this;
 
     if(isReturnKey) {
-	    this.setState((prevState) => ({
-	      value: prevState.value.concat(this.data.input.value)
-	    }), function() {
-	      console.log(this.state.value);
-	      this.data.input.value = '';
+	    self.props.handleState('add', self.input.value, () => {
+	    	self.forceUpdate();
+	    	console.log(self.props.data);
 	    });
     }
     
@@ -231,11 +230,11 @@ class DataList extends Component {
 
   handleDelete(index) {
     console.log('index', index); 
-    this.setState((prevState) => {
+    this.props.setState((prevState) => {
       prevState.value.splice(index,1);
       return { value: prevState.value }
     }, function() {
-      console.log(this.state.value);
+      console.log(this.props.data);
     })
 
   }
@@ -246,9 +245,9 @@ class DataList extends Component {
 
     return(
       <div>
-      	{this.state.value.length > 0 ? this.renderList():'Nenhum(a) '+this.props.placeholder+' cadastrado(a)'}
+      	{typeof this.props.data !== 'undefined' && this.props.data.length > 0 ? this.renderList():'Nenhum(a) '+this.props.placeholder+' cadastrado(a)'}
 		<div className="input-field">
-            <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.data.input = el;}} />
+            <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.input = el;}} />
 			<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
 		</div>
        	
@@ -257,9 +256,10 @@ class DataList extends Component {
   }
 
   renderList() {
+
   	return(
   		<ul className="collection">
-        {this.state.value.map((v,i,a) => (
+        {this.props.data.map((v,i,a) => (
           <li className="collection-item" key={i}>
             <div>
               {v}
@@ -326,12 +326,13 @@ class Helpers {
 
 	// Merges the obj2 properties into ojb1. Overwrites any property
 	// that may already exist in obj1
-	static push(obj1,obj2) {
+	static merge(obj1,obj2) {
 		var obj3 = {};
 		for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
 		for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
 		return obj3;
 	}
+
 
 
 }
