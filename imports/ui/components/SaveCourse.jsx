@@ -31,7 +31,10 @@ class SaveCourseClasses extends Component {
           }
         }
       );
-      
+
+		if(typeof this.state[this.property] === 'undefined') {
+			this.setState({
+				[this.property]: {}
     }
   }
 
@@ -39,7 +42,7 @@ class SaveCourseClasses extends Component {
   handleClick() {
     let refValues = Helpers.getRefValues(this.refs);
     console.log('refValues',refValues);
-    
+
     let form_data = this.state.current_class;
     console.log('form_data',form_data);
 
@@ -69,7 +72,7 @@ class SaveCourseClasses extends Component {
         {this.state.form_data.map((v,i,a) => (
           <div key={i}>
             <p>{v.code}</p>
-            <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span> 
+            <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span>
           </div>
         ))}
       </div>
@@ -79,7 +82,7 @@ class SaveCourseClasses extends Component {
   render() {
     return(
         <div>
-          
+
           {this.state.form_data.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
 
           <div className="save-course-classes">
@@ -89,12 +92,12 @@ class SaveCourseClasses extends Component {
             </div>
 
             <DataList ref="rooms" placeholder="Sala" data={this.state.current_class.rooms} handleState={this.handleRoomState.bind(this)} />
-            
+
 
             <button onClick={() => this.handleClick()} className="btn-floating btn-large waves-effect waves-light green"><i className="fa fa-plus"></i></button>
           </div>
 
-          
+
         </div>
     );
   }

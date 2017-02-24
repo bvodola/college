@@ -225,11 +225,11 @@ class DataList extends Component {
 	    	console.log(self.props.data);
 	    });
     }
-    
+
   }
 
   handleDelete(index) {
-    console.log('index', index); 
+    console.log('index', index);
     this.props.setState((prevState) => {
       prevState.value.splice(index,1);
       return { value: prevState.value }
@@ -250,7 +250,7 @@ class DataList extends Component {
             <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.input = el;}} />
 			<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
 		</div>
-       	
+
       </div>
     )
   }
@@ -333,8 +333,46 @@ class Helpers {
 		return obj3;
 	}
 
+	static handleState(e,self,operation,stateName) {
+		switch(operation) {
+			case 'set':
+				self.setState({
+					[stateName]:e.target.value
+				}, function() {
+					console.log(self.state);
+				});
+				break;
+		}
+	}
+}
+
+class StateHandler {
+	constructor(self, property = 'form_data') {
+		this.set = this.set.bind(self);
+		self.property = property;
+	}
+
+	set(stateName, newValue) {
+
+		if(typeof this.state[this.property] === 'undefined') {
+			this.setState({
+				[this.property]: {}
+			});
+		}
+
+		let data = this.state[this.property];
+		data[stateName] = newValue;
+		console.log(data);
+
+		this.setState({
+			[this.property]: data
+		}, function() {
+			console.log(this.state[this.property]);
+		});
+	}
+
 
 
 }
 
-export { Repeatable, DataSelect, DataList, Helpers, CheckboxList };
+export { Repeatable, DataSelect, DataList, Helpers, CheckboxList, StateHandler };

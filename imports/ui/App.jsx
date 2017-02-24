@@ -10,6 +10,7 @@ import ListCourses from './components/ListCourses.jsx';
 import CourseDetails from './components/CourseDetails.jsx';
 import ExtensionGroupsList from './components/ExtensionGroupsList.jsx';
 import EventsList from './components/EventsList.jsx';
+import Test from './components/Test.jsx';
 
 // =================
 // Routes Definition
@@ -24,6 +25,7 @@ const Routes = (
 			<Route path='/course-details' component={CourseDetails} />
 			<Route path='/extension-groups' component={ExtensionGroupsList} />
 			<Route path='/events' component={EventsList} />
+			<Route path='/test' component={Test} />
 		</Route>
 	</Route>
 );
