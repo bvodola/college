@@ -225,11 +225,11 @@ class DataList extends Component {
 	    	console.log(self.props.data);
 	    });
     }
-    
+
   }
 
   handleDelete(index) {
-    console.log('index', index); 
+    console.log('index', index);
     this.props.setState((prevState) => {
       prevState.value.splice(index,1);
       return { value: prevState.value }
@@ -250,7 +250,7 @@ class DataList extends Component {
             <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.input = el;}} />
 			<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
 		</div>
-       	
+
       </div>
     )
   }
@@ -331,6 +331,10 @@ class Helpers {
 		for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
 		for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
 		return obj3;
+	}
+
+	static handleStatus(param) {
+		console.log(param, this.status);
 	}
 
 

@@ -31,7 +31,7 @@ class SaveCourseClasses extends Component {
           }
         }
       );
-      
+
     }
   }
 
@@ -39,7 +39,7 @@ class SaveCourseClasses extends Component {
   handleClick() {
     let refValues = Helpers.getRefValues(this.refs);
     console.log('refValues',refValues);
-    
+
     let form_data = this.state.current_class;
     console.log('form_data',form_data);
 
@@ -69,7 +69,7 @@ class SaveCourseClasses extends Component {
         {this.state.form_data.map((v,i,a) => (
           <div key={i}>
             <p>{v.code}</p>
-            <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span> 
+            <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span>
           </div>
         ))}
       </div>
@@ -79,22 +79,25 @@ class SaveCourseClasses extends Component {
   render() {
     return(
         <div>
-          
+
           {this.state.form_data.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
 
-          <div className="save-course-classes">
+          <div className="save-course-classes custom-card">
+            <h4 className="card-title">Adicionar Turma</h4>
             <div className="input-field">
-              <input id="code" type="text" ref="code" />
-              <label htmlFor="code">Número da Turma</label>
+              <input id="class-code" type="text" ref="code" />
+              <label htmlFor="class-code">Número da Turma</label>
             </div>
-
+            <hr/>
+            <p className="list-title">Sala(s)</p>
             <DataList ref="rooms" placeholder="Sala" data={this.state.current_class.rooms} handleState={this.handleRoomState.bind(this)} />
-            
-
-            <button onClick={() => this.handleClick()} className="btn-floating btn-large waves-effect waves-light green"><i className="fa fa-plus"></i></button>
+            <hr/>
+            <button onClick={() => this.handleClick()} className="btn secondary full waves-effect waves-light">
+              <i className="fa fa-plus-circle"></i> Adicionar Turma
+            </button>
           </div>
 
-          
+
         </div>
     );
   }
@@ -115,8 +118,6 @@ class SaveCourse extends Component {
   render() {
     return(
       <div className="page">
-
-        <h2>Nova Disciplina</h2>
         <div className="input-field">
           <input id="code" type="text" ref="code" />
           <label htmlFor="code">Código da Disciplina</label>
@@ -129,7 +130,8 @@ class SaveCourse extends Component {
 
         <h3>Turmas</h3>
         <SaveCourseClasses ref="classes" stateValue />
-
+        <br/>
+        <button className="btn primary full waves-effect waves-light">Cadastrar Curso</button>
         <button onClick={() => this.showRefs()}>Show Refs</button>
       </div>
     );

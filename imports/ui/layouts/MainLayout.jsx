@@ -5,9 +5,9 @@ class MainLayout extends Component {
 
 	componentDidMount() {
 		$(".button-collapse").sideNav({
-			edge: 'right', // Choose the horizontal origin
-      		closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-      		draggable: true // Choose whether you can drag to open on touch screens
+			// edge: 'right', // Choose the horizontal origin
+  		closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+  		draggable: true // Choose whether you can drag to open on touch screens
 		});
 	}
 
@@ -48,7 +48,7 @@ class MainLayout extends Component {
 
 		return (
 			<div>
-				
+
 				 <nav className="custom-navbar navbar-fixed">
 				    <div className="nav-wrapper">
 				    <span onClick={browserHistory.goBack} className="button-back-wrapper">
@@ -56,7 +56,7 @@ class MainLayout extends Component {
 	      			</span>
 
 				      <a href="#!" className="brand-logo">{page_title}</a>
-				      
+
 
 				      <ul className="right hide-on-med-and-down">
 				        <li><a href="sass.html">Sass</a></li>
@@ -64,7 +64,7 @@ class MainLayout extends Component {
 				        <li><a href="collapsible.html">Javascript</a></li>
 				        <li><a href="mobile.html">Mobile</a></li>
 				      </ul>
-				      <ul id="slide-out" className="side-nav">
+				      <ul id="slide-out" className="side-nav right">
 				      	<li><Link to="/list-courses">Disciplinas</Link></li>
 					    <li><Link to="/save-course">Adicionar Disciplina</Link></li>
 					    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
@@ -78,7 +78,7 @@ class MainLayout extends Component {
 
 				    </div>
 				  </nav>
-				  
+
 				<div className="container">
 					{this.props.children}
 				</div>
