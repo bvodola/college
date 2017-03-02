@@ -333,12 +333,33 @@ class Helpers {
 		return obj3;
 	}
 
-	static handleStatus(param) {
-		console.log(param, this.status);
+}
+
+class StateHandler {
+	constructor(self, property = 'form_data') {
+		this.set = this.set.bind(self);
+		self.property = property;
 	}
 
+	set(stateName, newValue) {
 
+		if(typeof this.state[this.property] === 'undefined') {
+			this.setState({
+				[this.property]: {}
+			});
+		}
+
+		let data = this.state[this.property];
+		data[stateName] = newValue;
+		console.log(data);
+
+		this.setState({
+			[this.property]: data
+		}, function() {
+			console.log(this.state[this.property]);
+		});
+	}
 
 }
 
-export { Repeatable, DataSelect, DataList, Helpers, CheckboxList };
+export { Repeatable, DataSelect, DataList, Helpers, CheckboxList, StateHandler };

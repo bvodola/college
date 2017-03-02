@@ -31,7 +31,6 @@ class SaveCourseClasses extends Component {
           }
         }
       );
-
     }
   }
 

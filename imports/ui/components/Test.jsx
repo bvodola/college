@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
-import { Helpers } from '../helpers/Helpers.jsx';
+import { Helpers, StateHandler } from '../helpers/Helpers.jsx';
 
 class Test extends Component {
 
   constructor(props) {
     super(props);
-    this.status = {
-      data: []
-    }
-  }
+    this.state = {
+    };
 
-  showStatus() {
-    console.log(this.status);
   }
 
   render() {
+    let stateHandler = new StateHandler(this);
     return(
-      <div>
-        <input type="text" name="i1" onChange={Helpers.handleStatus.bind(this,1)}/>
-        <button onClick={this.showStatus.bind(this)}>Show Status</button>
+      <div className="page">
+        <input type="text" onChange={(e) => stateHandler.set('name', e.target.value)} />
       </div>
     );
   }
