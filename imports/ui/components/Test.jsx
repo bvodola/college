@@ -6,6 +6,18 @@ class Test extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      form_data: {
+        name: {
+          first: {
+            name: ''
+          },
+          second: [
+            {
+              name: ''
+            }
+          ]
+        }
+      }
     };
 
   }
@@ -14,7 +26,8 @@ class Test extends Component {
     let stateHandler = new StateHandler(this);
     return(
       <div className="page">
-        <input type="text" onChange={(e) => stateHandler.set('name', e.target.value)} />
+        <input type="text" onChange={(e) => stateHandler.set('name.second[0].name', e.target.value)} />
+        <input type="text" onChange={(e) => stateHandler.push('name.first.name', e.target.value)} />
       </div>
     );
   }

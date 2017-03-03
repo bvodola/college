@@ -15,27 +15,29 @@ class MainLayout extends Component {
 
 		let getPageTitle = function(url_pathname) {
 			switch(url_pathname) {
-				case '/save-teacher':
+				case 'save-teacher':
 					return 'Adicionar Professor';
 					break;
-
-				case '/save-course':
+				case 'edit-course':
+					return 'Editar Disciplina';
+					break;
+				case 'add-course':
 					return 'Adicinar Disciplina';
 					break;
 
-				case '/list-courses':
+				case 'list-courses':
 					return 'Lista de Disciplinas';
 					break;
 
-				case '/course-details':
+				case 'course-details':
 					return 'Detalhes do Curso'
 					break;
 
-				case '/events':
+				case 'events':
 					return 'Eventos';
 					break;
 
-				case '/extension-groups':
+				case 'extension-groups':
 					return 'Grupos de Extensão';
 					break;
 
@@ -44,7 +46,7 @@ class MainLayout extends Component {
 			}
 		}
 
-		let page_title = getPageTitle(this.props.location.pathname);
+		let page_title = getPageTitle(this.props.location.pathname.split('/')[1]);
 
 		return (
 			<div>
@@ -59,17 +61,16 @@ class MainLayout extends Component {
 
 
 				      <ul className="right hide-on-med-and-down">
-				        <li><a href="sass.html">Sass</a></li>
-				        <li><a href="badges.html">Components</a></li>
-				        <li><a href="collapsible.html">Javascript</a></li>
-				        <li><a href="mobile.html">Mobile</a></li>
+								<li><Link to="/list-courses">Disciplinas</Link></li>
+						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
+						    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
+						    <li><Link to="/events">Eventos</Link></li>
 				      </ul>
 				      <ul id="slide-out" className="side-nav right">
 				      	<li><Link to="/list-courses">Disciplinas</Link></li>
-					    <li><Link to="/save-course">Adicionar Disciplina</Link></li>
-					    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
-					    <li><Link to="/events">Eventos</Link></li>
-
+						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
+						    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
+						    <li><Link to="/events">Eventos</Link></li>
 					  </ul>
 
 					  <a href="#" data-activates="slide-out" className="button-collapse">

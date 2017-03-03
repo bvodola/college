@@ -1,99 +1,82 @@
 import React, { Component } from 'react';
 import { Courses } from '../../api/models.js';
-import { DataList, Helpers } from '../helpers/Helpers.jsx';
+import { DataList, Helpers, StateHandler } from '../helpers/Helpers.jsx';
+import { cloneDeep } from 'lodash';
+import { withRouter } from  'react-router';
 
+// =================
+// SaveCourseClasses
+// =================
 
 class SaveCourseClasses extends Component {
 
   constructor(props) {
     super(props);
+    this.initialFormData = {
+      code: '',
+      rooms: [],
+      teachers: []
+    }
+
     this.state = {
-      current_class: {
-        rooms: [],
-        teachers: []
-      },
+      show_form: false,
+      form_data: cloneDeep(this.initialFormData)
+    };
 
-      form_data: []
-    }
   }
-
-  handleRoomState(method, data, callback) {
-    if(method == 'add') {
-      let rooms = this.state.current_class.rooms;
-      this.setState(
-        (prevState) => {
-          prevState.current_class.rooms.push(data);
-          return prevState;
-        }, function() {
-          console.log('SaveCourse.jsx', this.state.current_class.rooms);
-          if(typeof cb === 'function') {
-            callback();
-          }
-        }
-      );
-    }
-  }
-
 
   handleClick() {
-    let refValues = Helpers.getRefValues(this.refs);
-    console.log('refValues',refValues);
-
-    let form_data = this.state.current_class;
-    console.log('form_data',form_data);
-
-    form_data = Helpers.merge(refValues,this.state.current_class);
-    console.log('form_data MERGED',form_data);
-
-    this.setState((prevState) => ({form_data: prevState.form_data.concat(form_data)}), function() {
-      console.log('state.form_data',this.state.form_data);
+    this.props.stateHandler.push('classes', this.state.form_data, () => {
+      this.setState({
+        form_data: cloneDeep(this.initialFormData)
+      });
     });
   }
 
-  handleDelete(index) {
-    this.setState((prevState) => {
-      prevState.value.splice(index,1);
-      return { value: prevState.value }
-    }, function() {
-      console.log(this.state.value);
-
-      this.refs.rooms.state.value = [];
-      console.log(this.refs.rooms);
-    })
+  handleToggleForm() {
+    this.setState((prevState) => ({
+      show_form: !prevState.show_form
+    }));
   }
 
-  renderClassesList() {
-    return(
-      <div className="course-classes-list">
-        {this.state.form_data.map((v,i,a) => (
-          <div key={i}>
-            <p>{v.code}</p>
-            <span onClick={() => this.handleDelete(i)}><i className="fa fa-trash"></i></span>
-          </div>
-        ))}
-      </div>
-    )
-  }
+
 
   render() {
+
+    let stateHandler = new StateHandler(this);
+
     return(
         <div>
 
-          {this.state.form_data.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
+          <div className='save-course-classes custom-card'>
+            <h4 className="card-title">
+              Adicionar Turma
+              <span onClick={() => this.handleToggleForm()} className="right"><i className={'fa fa-chevron-' + (this.state.show_form ? 'up':'down')}></i></span>
+            </h4>
 
-          <div className="save-course-classes custom-card">
-            <h4 className="card-title">Adicionar Turma</h4>
-            <div className="input-field">
-              <input id="class-code" type="text" ref="code" />
-              <label htmlFor="class-code">Número da Turma</label>
+            <div className={(this.state.show_form ? '':'hidden')+' save-course-classes-form'}>
+              <div className="input-field">
+                <input id="class-code" type="text" value={this.state.form_data.code} onChange={(e) => stateHandler.set('code', e.target.value)} />
+                <label htmlFor="class-code">Número da Turma</label>
+              </div>
+
+              <hr/>
+
+              <p className="list-title">Sala(s)</p>
+              <DataList ref="rooms" placeholder="Sala" data={this.state.form_data.rooms} stateHandler={stateHandler} statePath='rooms' />
+
+              <hr/>
+
+              <p className="list-title">Professor(es)</p>
+              <DataList ref="teachers" placeholder="Professor" data={this.state.form_data.teachers} stateHandler={stateHandler} statePath='teachers' />
+
+              <hr/>
+
+              <button onClick={() => this.handleClick()} className="btn secondary full waves-effect waves-light">
+                <i className="fa fa-plus-circle"></i> Adicionar Turma
+              </button>
             </div>
-            <hr/>
-            <p className="list-title">Sala(s)</p>
-            <DataList ref="rooms" placeholder="Sala" data={this.state.current_class.rooms} handleState={this.handleRoomState.bind(this)} />
-            <hr/>
-            <button onClick={() => this.handleClick()} className="btn secondary full waves-effect waves-light">
-              <i className="fa fa-plus-circle"></i> Adicionar Turma
-            </button>
+
           </div>
 
 
@@ -102,39 +85,106 @@ class SaveCourseClasses extends Component {
   }
 }
 
+// ==========
+// SaveCourse
+// ==========
 
 class SaveCourse extends Component {
 
   constructor(props) {
     super(props);
+    this.initialFormData = {
+      title: '',
+      code: '',
+      classes: []
+    };
+
+    this.state = {
+      form_data: cloneDeep(this.initialFormData)
+    };
+
   }
 
-  showRefs() {
-    console.log('refs', this.refs);
-    console.log('refValues', Helpers.getRefValues(this.refs));
+  componentDidMount() {
+    if(typeof this.props.course !== 'undefined') {
+      this.setState({
+        form_data: this.props.course
+      }, () => {console.log(this.state)});
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(typeof nextProps.course !== 'undefined') {
+      this.setState({
+        form_data: nextProps.course
+      }, () => {console.log(this.state)});
+    }
+  }
+
+  handleClick() {
+    let self = this;
+    let query = Helpers.merge(this.state.form_data, Helpers.getRefValues(this.refs));
+    delete query._id;
+
+    if(typeof this.props.course == 'undefined') {
+      Courses.insert(query, function(e, id) {
+        if(e) console.log(e);
+        else {
+          self.props.router.push('/course-details/'+id);
+        }
+      });
+    } else {
+      Courses.update({_id: this.props.course._id}, {$set: query}, function(e, success) {
+        if(e) console.log(e);
+        else {
+          self.props.router.push('/course-details/'+self.props.course._id);
+        }
+      });
+    }
+  }
+
+  renderClassesList() {
+    let stateHandler = new StateHandler(this);
+
+    return(
+      <ul className="collection course-classes-list">
+        {this.state.form_data.classes.map((v,i,a) => (
+          <li className="collection-item" key={i}>
+            Turma {v.code}
+            <span className="secondary-content">
+              <i onClick={() => stateHandler.remove('classes',i)} className="fa fa-trash"></i>
+            </span>
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   render() {
+
+    let stateHandler = new StateHandler(this);
+
+
     return(
       <div className="page">
         <div className="input-field">
-          <input id="code" type="text" ref="code" />
-          <label htmlFor="code">Código da Disciplina</label>
+          <input id="code" value={this.state.form_data.code} onChange={(e) => stateHandler.set('code', e.target.value)} type="text" />
+          <label className={this.props.course ? 'active':''} htmlFor="code">Código da Disciplina</label>
         </div>
 
         <div className="input-field">
-          <input id="title" type="text" ref="title" />
-          <label htmlFor="title">Tĩtulo da Disciplina</label>
+          <input id="title" type="text" value={this.state.form_data.title} onChange={(e) => stateHandler.set('title', e.target.value)}/>
+          <label className={this.props.course ? 'active':''} htmlFor="title">Tĩtulo da Disciplina</label>
         </div>
 
         <h3>Turmas</h3>
-        <SaveCourseClasses ref="classes" stateValue />
+        {this.state.form_data.classes.length > 0 ? this.renderClassesList() : 'Nenhuma Turma Cadastrada'}
+        <SaveCourseClasses ref="classes" stateHandler={stateHandler} />
         <br/>
-        <button className="btn primary full waves-effect waves-light">Cadastrar Curso</button>
-        <button onClick={() => this.showRefs()}>Show Refs</button>
+        <button onClick={() => this.handleClick()} className="btn primary full waves-effect waves-light">{this.props.course ? 'Salvar Alterações':'Cadastrar Curso'}</button>
       </div>
     );
   }
 }
 
-export default SaveCourse;
+export default withRouter(SaveCourse);

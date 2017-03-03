@@ -1,2 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import '../imports/api/models.js';
+import { Courses } from '../imports/api/models.js';
+
+// ============
+// Publications
+// ============
+
+// Courses Publication
+Meteor.publish('courses', () => (Courses.find({}) ));

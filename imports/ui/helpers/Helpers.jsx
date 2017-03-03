@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { get, set, update } from 'lodash';
 
 // ==========
 // Repeatable
@@ -220,23 +221,15 @@ class DataList extends Component {
     let self = this;
 
     if(isReturnKey) {
-	    self.props.handleState('add', self.input.value, () => {
-	    	self.forceUpdate();
-	    	console.log(self.props.data);
-	    });
+	    self.props.stateHandler.push(self.props.statePath, self.input.value);
+			self.input.value = '';
     }
 
   }
 
   handleDelete(index) {
-    console.log('index', index);
-    this.props.setState((prevState) => {
-      prevState.value.splice(index,1);
-      return { value: prevState.value }
-    }, function() {
-      console.log(this.props.data);
-    })
-
+		console.log(this);
+    this.props.stateHandler.remove(this.props.statePath, index);
   }
 
   render() {
@@ -246,17 +239,16 @@ class DataList extends Component {
     return(
       <div>
       	{typeof this.props.data !== 'undefined' && this.props.data.length > 0 ? this.renderList():'Nenhum(a) '+this.props.placeholder+' cadastrado(a)'}
-		<div className="input-field">
-            <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.input = el;}} />
-			<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
-		</div>
-
+				<div className="input-field">
+          <input onKeyUp={this.handleKeyUp} id={input_random_id} type="text" ref={(el) => {this.input = el;}} />
+					<label htmlFor={input_random_id}>Adicionar {this.props.placeholder}</label>
+				</div>
       </div>
     )
   }
 
   renderList() {
-
+		console.log(this.props);
   	return(
   		<ul className="collection">
         {this.props.data.map((v,i,a) => (
@@ -338,11 +330,14 @@ class Helpers {
 class StateHandler {
 	constructor(self, property = 'form_data') {
 		this.set = this.set.bind(self);
+		this.push = this.push.bind(self);
+		this.remove = this.remove.bind(self);
 		self.property = property;
 	}
 
-	set(stateName, newValue) {
+	set(statePath, newValue) {
 
+		// Setting the form_data proprety
 		if(typeof this.state[this.property] === 'undefined') {
 			this.setState({
 				[this.property]: {}
@@ -350,8 +345,39 @@ class StateHandler {
 		}
 
 		let data = this.state[this.property];
-		data[stateName] = newValue;
-		console.log(data);
+		set(data,statePath,newValue);
+
+		this.setState({
+			[this.property]: data
+		}, function() {
+			console.log(this.state[this.property]);
+		});
+	}
+
+	push(statePath, newValue, cb) {
+
+		// Setting the form_data proprety
+		if(typeof this.state[this.property] === 'undefined') {
+			this.setState({
+				[this.property]: {}
+			});
+		}
+
+		let data = this.state[this.property];
+		get(data,statePath).push(newValue);
+
+		this.setState(
+			{ [this.property]: data },
+			( typeof cb == 'function'? cb : function(){ return true;} )
+		);
+	}
+
+	remove(statePath, index) {
+
+		console.log('remove is being called');
+
+		let data = this.state[this.property];
+		get(data,statePath).splice(index,1);
 
 		this.setState({
 			[this.property]: data

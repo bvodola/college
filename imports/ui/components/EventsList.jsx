@@ -16,10 +16,10 @@ class EventsList extends Component {
   }
 
   render() {
-    
+
     return(
       <div className="page">
-        <h1>Events</h1>
+        <p>Em breve</p>
       </div>
     );
   }

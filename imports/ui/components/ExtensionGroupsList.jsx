@@ -16,11 +16,11 @@ class ExtensionGroupsList extends Component {
   }
 
   render() {
-    
+
     return(
       <div className="page">
-        <h1>ExtensionGroupsList</h1>
-      </div>  
+        <p>Em breve</p>
+      </div>
     );
   }
 }
