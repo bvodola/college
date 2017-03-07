@@ -13,7 +13,7 @@ import SaveTeacher from './components/SaveTeacher.jsx';
 import SaveCourse from './components/SaveCourse.jsx';
 import ExtensionGroupsList from './components/ExtensionGroupsList.jsx';
 import EventsList from './components/EventsList.jsx';
-import Test from './components/Test.jsx';
+import Contact from './components/Contact.jsx';
 
 // =================
 // Routes Definition
@@ -29,7 +29,7 @@ const Routes = (
 			<Route path='/course-details/:courseId' component={CourseDetailsContainer} />
 			<Route path='/extension-groups' component={ExtensionGroupsList} />
 			<Route path='/events' component={EventsList} />
-			<Route path='/test' component={Test} />
+			<Route path='/contact' component={Contact} />
 		</Route>
 	</Route>
 );

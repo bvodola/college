@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
+import { Courses } from '../../api/models.js';
 
 class CouseDetails extends Component {
+
+
+  handleClick(ev, course_id) {
+    ev.preventDefault();
+    Courses.remove({_id: course_id}, (e) => {
+      if(e) console.log('error', e);
+      else this.props.router.push('/list-courses/');
+    });
+
+  }
+
   render() {
     let course = this.props.course;
 
-    if(this.props.loading) {
-      console.log(this.props);
+    if(this.props.loading || typeof course === 'undefined') {
       return(<div>Loading...</div>);
     }
     else {
-      console.log(this.props);
+      console.log('props', this.props);
       return(
         <div className="course-details page">
           <Link to={'/edit-course/'+course._id}>
             <span className="btn primary btn-floating waves-effect waves-light right"><i className="fa fa-pencil"></i></span>
           </Link>
+          <span onClick={(ev) => this.handleClick(ev, course._id)} className="btn red darken-4 btn-floating waves-effect waves-light right"><i className="fa fa-trash"></i></span>
           <h1 className="code">
             {course.code}
           </h1>
@@ -62,4 +74,4 @@ class CouseDetails extends Component {
   }
 }
 
-export default CouseDetails;
+export default withRouter(CouseDetails);

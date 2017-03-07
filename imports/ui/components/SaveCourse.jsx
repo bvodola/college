@@ -49,9 +49,9 @@ class SaveCourseClasses extends Component {
         <div>
 
           <div className='save-course-classes custom-card'>
-            <h4 className="card-title">
+            <h4 onClick={() => this.handleToggleForm()} className="card-title">
               Adicionar Turma
-              <span onClick={() => this.handleToggleForm()} className="right"><i className={'fa fa-chevron-' + (this.state.show_form ? 'up':'down')}></i></span>
+              <span className="right"><i className={'fa fa-chevron-' + (this.state.show_form ? 'up':'down')}></i></span>
             </h4>
 
             <div className={(this.state.show_form ? '':'hidden')+' save-course-classes-form'}>
@@ -150,7 +150,22 @@ class SaveCourse extends Component {
       <ul className="collection course-classes-list">
         {this.state.form_data.classes.map((v,i,a) => (
           <li className="collection-item" key={i}>
-            Turma {v.code}
+            Turma {v.code} <br/>
+          Sala{v.rooms.length>1?'s':''}:&nbsp;
+          {v.rooms.map((room,j,rooms) => (
+            <span>
+              {room}
+              {j == rooms.length-1 ? '' : ', '}
+            </span>
+          ))}
+          <br/>
+          Professor{v.teachers.length>1?'es':''}:&nbsp;
+          {v.teachers.map((teacher,j,teachers) => (
+            <span>
+              {teacher}
+              {j == teachers.length-1 ? '' : ', '}
+            </span>
+          ))}
             <span className="secondary-content">
               <i onClick={() => stateHandler.remove('classes',i)} className="fa fa-trash"></i>
             </span>

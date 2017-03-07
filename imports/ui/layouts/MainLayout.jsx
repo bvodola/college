@@ -6,8 +6,8 @@ class MainLayout extends Component {
 	componentDidMount() {
 		$(".button-collapse").sideNav({
 			// edge: 'right', // Choose the horizontal origin
-  		closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-  		draggable: true // Choose whether you can drag to open on touch screens
+  		closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+  		// draggable: true // Choose whether you can drag to open on touch screens
 		});
 	}
 
@@ -41,6 +41,10 @@ class MainLayout extends Component {
 					return 'Grupos de Extensão';
 					break;
 
+				case 'contact':
+					return 'Fale Conosco';
+					break;
+
 				default:
 					return 'Poli App';
 			}
@@ -51,7 +55,7 @@ class MainLayout extends Component {
 		return (
 			<div>
 
-				 <nav className="custom-navbar navbar-fixed">
+				 <nav className="custom-navbar">
 				    <div className="nav-wrapper">
 				    <span onClick={browserHistory.goBack} className="button-back-wrapper">
 				      	<i className="fa fa-chevron-left buton-back"></i>
@@ -67,10 +71,12 @@ class MainLayout extends Component {
 						    <li><Link to="/events">Eventos</Link></li>
 				      </ul>
 				      <ul id="slide-out" className="side-nav right">
+								<li className="nav-header"><Link to="/">Poli App</Link></li>
 				      	<li><Link to="/list-courses">Disciplinas</Link></li>
 						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
 						    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
 						    <li><Link to="/events">Eventos</Link></li>
+								<li><Link to="/contact">Contato</Link></li>
 					  </ul>
 
 					  <a href="#" data-activates="slide-out" className="button-collapse">
