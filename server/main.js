@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Courses } from '../imports/api/models.js';
+import { Courses, Groups } from '../imports/api/models.js';
 
 // ============
 // Publications
@@ -7,3 +7,4 @@ import { Courses } from '../imports/api/models.js';
 
 // Courses Publication
 Meteor.publish('courses', () => (Courses.find({}) ));
+Meteor.publish('groups', () => (Groups.find({}) ));

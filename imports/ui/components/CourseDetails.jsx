@@ -18,7 +18,7 @@ class CouseDetails extends Component {
     let course = this.props.course;
 
     if(this.props.loading || typeof course === 'undefined') {
-      return(<div>Loading...</div>);
+      return(<div className="page">Loading...</div>);
     }
     else {
       console.log('props', this.props);
@@ -41,13 +41,6 @@ class CouseDetails extends Component {
             {course.classes.map((c,i) => (
               <div className="custom-card course-class" key={i}>
                 <p className="code card-title">Turma: {c.code}</p>
-
-                <p className="list-title">Horários</p>
-                <ul className="datetime">
-                  <li>Segunda, 09h20 até 11h00</li>
-                  <li>Quarta, 09h20 até 11h00</li>
-                </ul>
-
                 <p className="list-title">Sala(s)</p>
                 <ul className="rooms">
                   {c.rooms.map((room,j) => (

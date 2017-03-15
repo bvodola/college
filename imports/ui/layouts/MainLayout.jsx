@@ -37,12 +37,19 @@ class MainLayout extends Component {
 					return 'Eventos';
 					break;
 
-				case 'extension-groups':
+				case 'list-groups':
 					return 'Grupos de Extensão';
+					break;
+
+				case 'group-details':
+					return 'Detalhes do Grupo';
 					break;
 
 				case 'contact':
 					return 'Fale Conosco';
+					break;
+				case 'add-extension-group':
+					return 'Novo Grupo de Ext.';
 					break;
 
 				default:
@@ -74,7 +81,8 @@ class MainLayout extends Component {
 								<li className="nav-header"><Link to="/">Poli App</Link></li>
 				      	<li><Link to="/list-courses">Disciplinas</Link></li>
 						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
-						    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
+						    <li><Link to="/list-groups">Grupos de Extensão</Link></li>
+								<li><Link to="/add-extension-group">Adicionar Grupo</Link></li>
 						    <li><Link to="/events">Eventos</Link></li>
 								<li><Link to="/contact">Contato</Link></li>
 					  </ul>
