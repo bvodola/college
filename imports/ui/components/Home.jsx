@@ -30,7 +30,7 @@ class Home extends Component {
 						</Link>
 					</div>
 					<div className="col s6 m3 menu-item">
-						<Link to="/extension-groups/">
+						<Link to="/list-groups/">
 							<span className="btn-floating btn-large btn waves-effect waves-light secondary">
 								<i className="fa fa-group"></i>
 							</span>

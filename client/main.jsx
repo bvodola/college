@@ -18,6 +18,17 @@ import { AppContainer } from 'react-hot-loader';
 
 Meteor.startup(() => {
 
+	// if(Meteor.isCordova) {
+	// 	Cordova.depends({
+	// 	    'cordova-plugin-inappbrowser': '1.7.0'
+	// 	});
+	//
+	// 	document.addEventListener("deviceready", onDeviceReady, false);
+	// 	function onDeviceReady() {
+	// 	    window.open = cordova.InAppBrowser.open;
+	// 	}
+	// }
+
 	let enableSSR = false;
 	let enableHMR = !enableSSR;
 

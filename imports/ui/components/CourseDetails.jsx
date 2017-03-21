@@ -1,9 +1,9 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router';
 import { Courses } from '../../api/models.js';
 
 class CouseDetails extends Component {
-
 
   handleClick(ev, course_id) {
     ev.preventDefault();
@@ -24,10 +24,15 @@ class CouseDetails extends Component {
       console.log('props', this.props);
       return(
         <div className="course-details page">
-          <Link to={'/edit-course/'+course._id}>
-            <span className="btn primary btn-floating waves-effect waves-light right"><i className="fa fa-pencil"></i></span>
-          </Link>
-          <span onClick={(ev) => this.handleClick(ev, course._id)} className="btn red darken-4 btn-floating waves-effect waves-light right"><i className="fa fa-trash"></i></span>
+          {Meteor.user()?(
+            <div>
+              <Link to={'/edit-course/'+course._id}>
+                <span className="btn primary btn-floating waves-effect waves-light right"><i className="fa fa-pencil"></i></span>
+              </Link>
+              <span onClick={(ev) => this.handleClick(ev, course._id)} className="btn red darken-4 btn-floating waves-effect waves-light right"><i className="fa fa-trash"></i></span>
+            </div>
+          )
+          :''}
           <h1 className="code">
             {course.code}
           </h1>

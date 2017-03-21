@@ -26,3 +26,6 @@ react-meteor-data
 polyroid:font-roboto
 planettraining:material-design-icons
 materialize:materialize@=0.97.5
+email
+check
+meteorhacks:kadira

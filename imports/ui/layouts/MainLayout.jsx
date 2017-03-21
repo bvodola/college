@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
+import { Meteor } from 'meteor/meteor';
 
 class MainLayout extends Component {
 
 	componentDidMount() {
-		$(".button-collapse").sideNav({
+		$(".button-collapse").off('click').sideNav({
 			// edge: 'right', // Choose the horizontal origin
   		closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
   		// draggable: true // Choose whether you can drag to open on touch screens
 		});
+		if($('.drag-target').length) return;
 	}
 
 	render() {
@@ -66,23 +68,27 @@ class MainLayout extends Component {
 				    <div className="nav-wrapper">
 				    <span onClick={browserHistory.goBack} className="button-back-wrapper">
 				      	<i className="fa fa-chevron-left buton-back"></i>
+								<span className="brand-logo">{page_title}</span>
 	      			</span>
 
-				      <a href="#!" className="brand-logo">{page_title}</a>
+
 
 
 				      <ul className="right hide-on-med-and-down">
-								<li><Link to="/list-courses">Disciplinas</Link></li>
-						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
-						    <li><Link to="/extension-groups">Grupos de Extensão</Link></li>
+								<li className="nav-header"><Link to="/">Poli App</Link></li>
+				      	<li><Link to="/list-courses">Disciplinas</Link></li>
+						    {Meteor.user()?<li><Link to="/add-course">Adicionar Disciplina</Link></li>:''}
+						    <li><Link to="/list-groups">Grupos de Extensão</Link></li>
+								{Meteor.user()?<li><Link to="/add-extension-group">Adicionar Grupo</Link></li>:''}
 						    <li><Link to="/events">Eventos</Link></li>
+								<li><Link to="/contact">Contato</Link></li>
 				      </ul>
 				      <ul id="slide-out" className="side-nav right">
 								<li className="nav-header"><Link to="/">Poli App</Link></li>
 				      	<li><Link to="/list-courses">Disciplinas</Link></li>
-						    <li><Link to="/add-course">Adicionar Disciplina</Link></li>
+						    {Meteor.user()?<li><Link to="/add-course">Adicionar Disciplina</Link></li>:''}
 						    <li><Link to="/list-groups">Grupos de Extensão</Link></li>
-								<li><Link to="/add-extension-group">Adicionar Grupo</Link></li>
+								{Meteor.user()?<li><Link to="/add-extension-group">Adicionar Grupo</Link></li>:''}
 						    <li><Link to="/events">Eventos</Link></li>
 								<li><Link to="/contact">Contato</Link></li>
 					  </ul>

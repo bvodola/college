@@ -1,5 +1,24 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { get, set, update } from 'lodash';
+
+class ExternalLink extends Component {
+
+	handleClick(ev) {
+		if(Meteor.isCordova) {
+			ev.preventDefault();
+			window.open(this.props.href, '_blank', 'location=yes', 'closebuttoncaption=X');
+		}
+	}
+
+	render() {
+		return(
+			<a href={this.props.href} target={this.props.target} className={this.props.className} id={this.props.id} onClick={(ev) => this.handleClick(ev)}>
+				{this.props.children}
+			</a>
+		)
+	}
+}
 
 // ==========
 // Repeatable
@@ -388,4 +407,4 @@ class StateHandler {
 
 }
 
-export { Repeatable, DataSelect, DataList, Helpers, CheckboxList, StateHandler };
+export { Repeatable, DataSelect, DataList, Helpers, CheckboxList, StateHandler, ExternalLink };
